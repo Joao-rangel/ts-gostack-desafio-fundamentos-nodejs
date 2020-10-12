@@ -18,19 +18,17 @@ class TransactionsRepository {
   }
 
   public getBalance(): Balance {
-    const income = this.transactions.reduce((total, transaction) => {
-      if (transaction.type === 'income') {
+    const income = this.transactions
+      .filter(transaction => transaction.type === 'income')
+      .reduce((total, transaction) => {
         return total + transaction.value;
-      }
-      return total;
-    }, 0);
+      }, 0);
 
-    const outcome = this.transactions.reduce((total, transaction) => {
-      if (transaction.type === 'outcome') {
+    const outcome = this.transactions
+      .filter(transaction => transaction.type === 'outcome')
+      .reduce((total, transaction) => {
         return total + transaction.value;
-      }
-      return total;
-    }, 0);
+      }, 0);
 
     const total = income - outcome;
 
