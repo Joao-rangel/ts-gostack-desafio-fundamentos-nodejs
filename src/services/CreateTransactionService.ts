@@ -9,7 +9,15 @@ class CreateTransactionService {
   }
 
   public execute({ title, value, type }: Omit<Transaction, 'id'>): Transaction {
-    // TODO INSERT ERROR RULES
+    if (type === 'outcome') {
+      const ballance = this.transactionsRepository.getBalance().total;
+
+      const remainingFunds = ballance - value;
+
+      if (remainingFunds < 0) {
+        throw Error('insufficient funds');
+      }
+    }
 
     const transaction = this.transactionsRepository.create({
       title,
